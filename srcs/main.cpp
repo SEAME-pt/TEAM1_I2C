@@ -1,130 +1,123 @@
 #include <iostream>
-#include <fcntl.h>      // open()
-#include <unistd.h>     // read(), write(), close()
-#include <sys/ioctl.h>  // ioctl()
-#include <linux/i2c-dev.h> // interface I2C
-#include <cstdint>      // uint8_t, etc.
-#include <string>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/i2c-dev.h>
+#include <cstdint>
+#include <stdexcept>
 
-#define I2C_DEVICE "/dev/i2c-1" // Barramento padrão no Raspberry Pi
-
-// ============================================================================
-// Classe base: I2CDevice
-// ============================================================================
-class I2CDevice {
-protected:
-    int fd;              // File descriptor do dispositivo
-    int address;         // Endereço I2C
-    std::string device;  // Caminho do barramento I2C
-
+class PCA9685 {
 public:
-    I2CDevice(const std::string& dev, int addr)
-        : fd(-1), address(addr), device(dev) {}
-
-    virtual ~I2CDevice() {
-        if (fd >= 0) close(fd);
+    PCA9685(const char* i2c_device, uint8_t address) : addr(address) {
+        if ((file = open(i2c_device, O_RDWR)) < 0) {
+            throw std::runtime_error("Failed to open I2C device");
+        }
+        if (ioctl(file, I2C_SLAVE, addr) < 0) {
+            throw std::runtime_error("Failed to set I2C address");
+        }
     }
 
-    // Abre o dispositivo e configura o endereço
-    bool openDevice() {
-        fd = open(device.c_str(), O_RDWR);
-        if (fd < 0) {
-            perror("Erro ao abrir dispositivo I2C");
-            return false;
-        }
-        if (ioctl(fd, I2C_SLAVE, address) < 0) {
-            perror("Erro ao configurar endereço I2C");
-            close(fd);
-            fd = -1;
-            return false;
-        }
-        return true;
+    ~PCA9685() {
+        close(file);
     }
 
-    // Escreve um byte em um registrador
-    bool writeReg8(uint8_t reg, uint8_t value) {
-        uint8_t buffer[2] = {reg, value};
-        if (write(fd, buffer, 2) != 2) {
-            perror("Erro ao escrever no barramento I2C");
-            return false;
+    void write_byte(uint8_t reg, uint8_t val) {
+        uint8_t buffer[2] = {reg, val};
+        if (write(file, buffer, 2) != 2) {
+            throw std::runtime_error("Failed to write I2C byte");
         }
-        return true;
     }
 
-    // Escreve múltiplos bytes
-    bool writeBytes(const uint8_t* data, size_t length) {
-        if (write(fd, data, length) != (ssize_t)length) {
-            perror("Erro ao enviar bytes via I2C");
-            return false;
-        }
-        return true;
+    void set_pwm(uint8_t channel, uint16_t on, uint16_t off) {
+        uint8_t reg_base = 0x06 + 4 * channel;
+        write_byte(reg_base, on & 0xFF);
+        write_byte(reg_base + 1, on >> 8);
+        write_byte(reg_base + 2, off & 0xFF);
+        write_byte(reg_base + 3, off >> 8);
     }
-};
 
-// ============================================================================
-// Classe derivada: Motor (usa PCA9685 como controlador PWM)
-// ============================================================================
-class Motor : public I2CDevice {
+    
+    void init(uint8_t prescaler) {
+        write_byte(0x00, 0x00); // MODE1 normal
+        usleep(5000);
+        write_byte(0x01, 0x04); // MODE2 totem pole
+        usleep(5000);
+        write_byte(0x00, 0x10); // MODE1 sleep
+        usleep(5000);
+        write_byte(0xFE, prescaler); // Set prescaler
+        usleep(5000);
+        write_byte(0x00, 0x80); // Exit sleep
+        usleep(5000);
+    }
+
+    void stop_all() {
+        for (uint8_t ch = 0; ch < 16; ++ch) {
+            set_pwm(ch, 0, 0);
+        }
+    }
+
+    void stop_motors() {
+        for (uint8_t ch = 0; ch < 8; ++ch) {
+            set_pwm_duty(ch, 0);
+        }
+    }
+
+void set_pwm_duty(uint8_t channel, float duty_fraction) {
+    if (duty_fraction <= 0.0f) {
+        set_pwm(channel, 0, 0);
+    } else if (duty_fraction >= 1.0f) {
+        set_pwm(channel, 0, 4095);
+    } else {
+        uint16_t duty = static_cast<uint16_t>(duty_fraction * 4095);
+        set_pwm(channel, 0, duty);
+    }
+}
+
+void set_motor_throttle(float throttle, float gain) {
+    float adjusted_throttle = throttle * gain;
+
+    if (adjusted_throttle > 0.0f) {
+        float duty = adjusted_throttle;
+        set_pwm_duty(0, duty);  // Motor 1 speed
+        set_pwm_duty(1, 1.0f);  // Direction 1
+        set_pwm_duty(2, 0.0f);  // Direction 2
+        set_pwm_duty(3, 0.0f);  // Motor 2 speed
+        set_pwm_duty(4, duty);  // Motor 2 speed
+        set_pwm_duty(5, 0.0f);  // Direction 2
+        set_pwm_duty(6, 1.0f);  // Direction 1
+        set_pwm_duty(7, duty);  // Motor 2 speed
+    } else if (adjusted_throttle < 0.0f) {
+        float duty = -adjusted_throttle;
+        set_pwm_duty(0, duty);
+        set_pwm_duty(1, 0.0f);
+        set_pwm_duty(2, 1.0f);
+        set_pwm_duty(3, duty);
+        set_pwm_duty(4, 0.0f);
+        set_pwm_duty(5, 1.0f);
+        set_pwm_duty(6, 0.0f);
+        set_pwm_duty(7, duty);
+    } else {
+        stop_motors();
+    }
+}
+
 private:
-    int channel; // Canal do motor (0–15)
-
-public:
-    Motor(const std::string& dev, int addr, int ch)
-        : I2CDevice(dev, addr), channel(ch) {}
-
-    // Configura o driver PCA9685
-    bool setup() {
-        if (!openDevice()) return false;
-        std::cout << "Configurando PCA9685 no endereço 0x" 
-                  << std::hex << address << "..." << std::endl;
-        return writeReg8(0x00, 0x00); // MODO1: normal
-    }
-
-    // Define o PWM (posição on/off de 12 bits)
-    void setPWM(int on, int off) {
-        uint8_t reg = 0x06 + 4 * channel;
-        uint8_t data[5] = {
-            reg,
-            static_cast<uint8_t>(on & 0xFF),
-            static_cast<uint8_t>(on >> 8),
-            static_cast<uint8_t>(off & 0xFF),
-            static_cast<uint8_t>(off >> 8)
-        };
-        if (!writeBytes(data, 5)) {
-            std::cerr << "Falha ao ajustar PWM para o canal " << channel << std::endl;
-        }
-    }
-
-    // Liga o motor (duty cycle entre 0 e 4095)
-    void ligar(int duty = 2048) {
-        std::cout << "Ligando motor no canal " << channel
-                  << " com duty " << duty << std::endl;
-        setPWM(0, duty);
-    }
-
-    // Desliga o motor
-    void desligar() {
-        std::cout << "Desligando motor no canal " << channel << std::endl;
-        setPWM(0, 0);
-    }
+    int file;
+    uint8_t addr;
 };
 
-// ============================================================================
-// Programa principal
-// ============================================================================
+// Exemplo de uso
 int main() {
-    Motor motor(I2C_DEVICE, 0x40, 0); // endereço 0x40, canal 0
-
-    if (!motor.setup()) {
-        std::cerr << "Falha na inicialização do motor!" << std::endl;
+    try {
+        PCA9685 pca("/dev/i2c-1", 0x40);
+        pca.init(121); // Prescaler exemplo para ~50Hz
+        pca.set_motor_throttle(0.5f, 1.0f); // Motor para frente 50%
+        sleep(2);
+        pca.stop_all();
+    } catch (const std::exception &e) {
+        std::cerr << "Erro: " << e.what() << std::endl;
         return 1;
     }
-
-    motor.ligar(2048); // 50% de velocidade
-    sleep(5);          // mantém o motor ligado
-    motor.desligar();
-
-    std::cout << "Finalizado." << std::endl;
     return 0;
 }
 
