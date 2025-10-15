@@ -2,4 +2,5 @@
 -I/usr/include
 -I/usr/include/wiringPi
 -I/usr/local/include
+-I/include
 
