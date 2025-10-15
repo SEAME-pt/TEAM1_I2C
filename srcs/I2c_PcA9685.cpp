@@ -2,10 +2,11 @@
 
 
 int I2c::_fd_mot = 0;
-
 int I2c::_fd_servo = 0;
-
 int I2c::_fd_set = 0;
+float I2c::_SERVO_MIN_PULSE_MS = 0.5f;
+float I2c::_SERVO_MAX_PULSE_MS = 2.5f;
+float I2c::_SERVO_FREQ = 50.0f;
 
 void I2c::init(uint8_t addr_mot, uint8_t addr_servo,std::string i2c_device)
 {
@@ -95,6 +96,26 @@ void I2c::set_pwm_duty(uint8_t channel, float duty_fraction) {
     }
 }
 
+uint16_t I2c::ms_to_pwm(float ms) {
+        float pulse_length_us = 1000000.0f / _SERVO_FREQ / 4096.0f; // em us
+        return static_cast<uint16_t>(ms * 1000.0f / pulse_length_us);
+    }
+
+    // Converte ângulo 0-180 para pulso em ms, depois para PWM
+uint16_t I2c::angle_to_pwm(float angle) {
+        if (angle < 0.0f) angle = 0.0f;
+        if (angle > 180.0f) angle = 180.0f;
+        float pulse_ms = _SERVO_MIN_PULSE_MS + (angle / 180.0f) * (_SERVO_MAX_PULSE_MS - _SERVO_MIN_PULSE_MS);
+        return ms_to_pwm(pulse_ms);
+    }
+
+void I2c::set_servo_angle( float angle) {	
+	uint8_t channel  = 0;
+	_fd_set = _fd_mot;
+        uint16_t pwm = angle_to_pwm(angle);
+        set_pwm(channel, 0, pwm);
+    }
+
 
 void I2c::motor(int mot,int seepd,int dir)
 {
@@ -135,7 +156,11 @@ void I2c::motor(int mot,int seepd,int dir)
 int main()
 {
 	I2c::init(0x60,0x40,"/dev/i2c-1");
-	I2c::motor(0,100,1);
+	I2c::set_servo_angle(150);
+	I2c::motor(0,100,1);	
+	I2c::set_servo_angle(90);
 	sleep(5);
+	I2c::set_servo_angle(0);
 	I2c::stop_motors();
+	
 }

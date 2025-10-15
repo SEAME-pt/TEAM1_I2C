@@ -6,6 +6,14 @@
 #include <cstdint>
 #include <stdexcept>
 #include <cmath>
+#include <thread>
+
+// AJUSTE ESTES VALORES conforme o seu servo:
+// Para a maioria dos servos: 0.5ms (0°) a 2.5ms (180°)
+// Se não atingir o curso total, tente 0.6ms~2.4ms
+constexpr float SERVO_MIN_PULSE_MS = 0.5f;  // ms (0°)
+constexpr float SERVO_MAX_PULSE_MS = 2.5f;  // ms (180°)
+constexpr float SERVO_FREQ = 50.0f;         // Hz
 
 class PCA9685 {
 public:
@@ -46,32 +54,37 @@ public:
         usleep(5000);
         write_byte(0xFE, prescaler); // Set prescaler
         usleep(5000);
-        write_byte(0x00, 0x80); // Exit sleep
+        write_byte(0x00, 0xA1); // Restart, auto-increment, allcall
         usleep(5000);
     }
 
-    // ===========================
-    // Funções para servo motor
-    // ===========================
+    // Converte pulso em ms para valor PWM (0-4095)
+    uint16_t ms_to_pwm(float ms) {
+        float pulse_length_us = 1000000.0f / SERVO_FREQ / 4096.0f; // em us
+        return static_cast<uint16_t>(ms * 1000.0f / pulse_length_us);
+    }
 
-    // Converte ângulo 0°-180° para valor PWM 0-4095
+    // Converte ângulo 0-180 para pulso em ms, depois para PWM
     uint16_t angle_to_pwm(float angle) {
         if (angle < 0.0f) angle = 0.0f;
         if (angle > 180.0f) angle = 180.0f;
-
-        const float min_pulse_ms = 1.0f;  // 0°
-        const float max_pulse_ms = 2.0f;  // 180°
-        const float freq = 50.0f;         // Hz
-        const float period_ms = 1000.0f / freq; // ~20ms
-
-        float pulse_ms = min_pulse_ms + (angle / 180.0f) * (max_pulse_ms - min_pulse_ms);
-        uint16_t pwm_val = static_cast<uint16_t>((pulse_ms / period_ms) * 4095);
-        return pwm_val;
+        float pulse_ms = SERVO_MIN_PULSE_MS + (angle / 180.0f) * (SERVO_MAX_PULSE_MS - SERVO_MIN_PULSE_MS);
+        return ms_to_pwm(pulse_ms);
     }
 
     void set_servo_angle(uint8_t channel, float angle) {
         uint16_t pwm = angle_to_pwm(angle);
         set_pwm(channel, 0, pwm);
+    }
+
+    // Movimento suave entre dois ângulos, garantindo o fim exato
+    void smooth_move(uint8_t channel, float from, float to, int steps = 50, int delay_ms = 20) {
+        for (int i = 0; i <= steps; ++i) {
+            float t = static_cast<float>(i) / steps;
+            float angle = from + (to - from) * t;
+            set_servo_angle(channel, angle);
+            std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
+        }
     }
 
     void stop_all() {
@@ -85,25 +98,17 @@ private:
     uint8_t addr;
 };
 
-// ===========================
-// Exemplo de uso
-// ===========================
 int main() {
     try {
         PCA9685 pca("/dev/i2c-1", 0x40);
         pca.init(121); // Prescaler para ~50Hz
 
-        // Teste de servo
-        std::cout << "Servo 0 para 0°\n";
-        pca.set_servo_angle(0, 0);
-        sleep(1);
 
-        std::cout << "Servo 0 para 90°\n";
-        pca.set_servo_angle(0, 90);
+        // Teste ângulos extremos (caso precise calibrar)
+        std::cout << "Testando extremos...\n";
+        pca.set_servo_angle(0, 0);   // 0°
         sleep(1);
-
-        std::cout << "Servo 0 para 180°\n";
-        pca.set_servo_angle(0, 180);
+        pca.set_servo_angle(0, 180); // 180°
         sleep(1);
 
         pca.stop_all();
@@ -114,4 +119,3 @@ int main() {
     }
     return 0;
 }
-
