@@ -26,7 +26,6 @@ void I2c::init(uint8_t addr_mot, uint8_t addr_servo,std::string i2c_device)
         if (ioctl(_fd_servo, I2C_SLAVE, addr_servo ) < 0) {
             throw std::runtime_error("Failed to set I2C address");
         }
-
 	_fd_set = _fd_mot;
  	write_byte(0x00, 0x00); // MODE1 normal
         usleep(5000);
@@ -151,6 +150,24 @@ void I2c::motor(int mot,int seepd,bool dir)
         set_pwm_duty(7, duty);  // Motor 2 speed
 	}
 	
+}
+
+void I2c::brake_motor()
+{
+	float intensity = 1;
+        float duty = (intensity > 1.0f) ? 1.0f : (intensity < 0.0f ? 0.0f : intensity);
+
+        // Ambos os lados “altos” (equivale a curto virtual no driver)
+        set_pwm_duty(1, duty);
+        set_pwm_duty(2, duty);
+        set_pwm_duty(4, duty);
+        set_pwm_duty(5, duty);
+
+        usleep(100000); // 100 ms de frenagem ativa
+
+        // Desliga tudo após frear
+        stop_motors();
+
 }
 
 

@@ -29,4 +29,5 @@ class I2c
 		static void stop_motors();
 		static void motor(int mot,int speed,bool dir);
    		static void set_servo_angle( float angle);
+		static void brake_motor();
 };
