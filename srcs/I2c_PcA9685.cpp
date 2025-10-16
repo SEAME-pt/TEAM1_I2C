@@ -1,4 +1,5 @@
 #include "../include/I2c_PcA9685.hpp"
+#include <stdint.h>
 
 
 int I2c::_fd_mot = 0;
