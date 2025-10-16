@@ -117,7 +117,7 @@ void I2c::set_servo_angle( float angle) {
     }
 
 
-void I2c::motor(int mot,int seepd,int dir)
+void I2c::motor(int mot,int seepd,bool dir)
 {
 	_fd_set = _fd_mot;
     	float adjusted_throttle = (float)seepd/100 * (float)dir;
@@ -149,18 +149,8 @@ void I2c::motor(int mot,int seepd,int dir)
         set_pwm_duty(6, 1.0f);  // Direction 1
         set_pwm_duty(7, duty);  // Motor 2 speed
 	}
-
-}
-
-
-int main()
-{
-	I2c::init(0x60,0x40,"/dev/i2c-1");
-	I2c::set_servo_angle(150);
-	I2c::motor(0,100,1);	
-	I2c::set_servo_angle(90);
-	sleep(5);
-	I2c::set_servo_angle(0);
-	I2c::stop_motors();
 	
 }
+
+
+

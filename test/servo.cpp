@@ -61,7 +61,7 @@ public:
     // Converte pulso em ms para valor PWM (0-4095)
     uint16_t ms_to_pwm(float ms) {
         float pulse_length_us = 1000000.0f / SERVO_FREQ / 4096.0f; // em us
-        return static_cast<uint16_t>(ms * 1000.0f / pulse_length_us);
+return static_cast<uint16_t>(ms * 1000.0f / pulse_length_us);
     }
 
     // Converte ângulo 0-180 para pulso em ms, depois para PWM

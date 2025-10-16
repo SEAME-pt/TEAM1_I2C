@@ -27,6 +27,6 @@ class I2c
 		static void init(uint8_t addr_mot, uint8_t addr_servo,std::string i2c_device);
 		static void stop_all();
 		static void stop_motors();
-		static void motor(int mot,int speed,int dir);
+		static void motor(int mot,int speed,bool dir);
    		static void set_servo_angle( float angle);
 };
