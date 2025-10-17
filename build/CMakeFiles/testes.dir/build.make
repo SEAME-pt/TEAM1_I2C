@@ -83,10 +83,24 @@ CMakeFiles/testes.dir/test/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testes.dir/test/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/joao41/git/TEAM1_I2C/test/main.cpp -o CMakeFiles/testes.dir/test/main.cpp.s
 
+CMakeFiles/testes.dir/srcs/I2c.cpp.o: CMakeFiles/testes.dir/flags.make
+CMakeFiles/testes.dir/srcs/I2c.cpp.o: ../srcs/I2c.cpp
+CMakeFiles/testes.dir/srcs/I2c.cpp.o: CMakeFiles/testes.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/testes.dir/srcs/I2c.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/testes.dir/srcs/I2c.cpp.o -MF CMakeFiles/testes.dir/srcs/I2c.cpp.o.d -o CMakeFiles/testes.dir/srcs/I2c.cpp.o -c /home/joao41/git/TEAM1_I2C/srcs/I2c.cpp
+
+CMakeFiles/testes.dir/srcs/I2c.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/testes.dir/srcs/I2c.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/joao41/git/TEAM1_I2C/srcs/I2c.cpp > CMakeFiles/testes.dir/srcs/I2c.cpp.i
+
+CMakeFiles/testes.dir/srcs/I2c.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testes.dir/srcs/I2c.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/joao41/git/TEAM1_I2C/srcs/I2c.cpp -o CMakeFiles/testes.dir/srcs/I2c.cpp.s
+
 CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o: CMakeFiles/testes.dir/flags.make
 CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o: ../srcs/I2c_PcA9685.cpp
 CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o: CMakeFiles/testes.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o -MF CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o.d -o CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o -c /home/joao41/git/TEAM1_I2C/srcs/I2c_PcA9685.cpp
 
 CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.i: cmake_force
@@ -97,19 +111,37 @@ CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/joao41/git/TEAM1_I2C/srcs/I2c_PcA9685.cpp -o CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.s
 
+CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o: CMakeFiles/testes.dir/flags.make
+CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o: ../srcs/I2c_INA219.cpp
+CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o: CMakeFiles/testes.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o -MF CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o.d -o CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o -c /home/joao41/git/TEAM1_I2C/srcs/I2c_INA219.cpp
+
+CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/joao41/git/TEAM1_I2C/srcs/I2c_INA219.cpp > CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.i
+
+CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/joao41/git/TEAM1_I2C/srcs/I2c_INA219.cpp -o CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.s
+
 # Object files for target testes
 testes_OBJECTS = \
 "CMakeFiles/testes.dir/test/main.cpp.o" \
-"CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o"
+"CMakeFiles/testes.dir/srcs/I2c.cpp.o" \
+"CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o" \
+"CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o"
 
 # External object files for target testes
 testes_EXTERNAL_OBJECTS =
 
 testes: CMakeFiles/testes.dir/test/main.cpp.o
+testes: CMakeFiles/testes.dir/srcs/I2c.cpp.o
 testes: CMakeFiles/testes.dir/srcs/I2c_PcA9685.cpp.o
+testes: CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o
 testes: CMakeFiles/testes.dir/build.make
 testes: CMakeFiles/testes.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable testes"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable testes"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/testes.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

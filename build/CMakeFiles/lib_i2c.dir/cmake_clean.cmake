@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.o"
+  "CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.o.d"
+  "CMakeFiles/lib_i2c.dir/srcs/I2c_INA219.cpp.o"
+  "CMakeFiles/lib_i2c.dir/srcs/I2c_INA219.cpp.o.d"
   "CMakeFiles/lib_i2c.dir/srcs/I2c_PcA9685.cpp.o"
   "CMakeFiles/lib_i2c.dir/srcs/I2c_PcA9685.cpp.o.d"
   "liblib_i2c.a"

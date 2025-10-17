@@ -85,12 +85,12 @@ clean: CMakeFiles/test.dir/clean
 CMakeFiles/lib_i2c.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=1,2 "Built target lib_i2c"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=1,2,3,4 "Built target lib_i2c"
 .PHONY : CMakeFiles/lib_i2c.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/lib_i2c.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/lib_i2c.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 0
 .PHONY : CMakeFiles/lib_i2c.dir/rule
@@ -137,12 +137,12 @@ CMakeFiles/lib.dir/clean:
 CMakeFiles/testes.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=3,4,5 "Built target testes"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joao41/git/TEAM1_I2C/build/CMakeFiles --progress-num=5,6,7,8,9 "Built target testes"
 .PHONY : CMakeFiles/testes.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testes.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/testes.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 0
 .PHONY : CMakeFiles/testes.dir/rule
@@ -168,7 +168,7 @@ CMakeFiles/test.dir/all: CMakeFiles/testes.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/joao41/git/TEAM1_I2C/build/CMakeFiles 0
 .PHONY : CMakeFiles/test.dir/rule

@@ -1,7 +1,7 @@
-CMakeFiles/testes.dir/test/main.cpp.o: \
- /home/joao41/git/TEAM1_I2C/test/main.cpp /usr/include/stdc-predef.h \
- /home/joao41/git/TEAM1_I2C/test/../include/I2c.hpp \
- /home/joao41/git/TEAM1_I2C/test/../include/I2c_PcA9685.hpp \
+CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.o: \
+ /home/joao41/git/TEAM1_I2C/srcs/I2c.cpp /usr/include/stdc-predef.h \
+ /home/joao41/git/TEAM1_I2C/srcs/../include/I2c.hpp \
+ /home/joao41/git/TEAM1_I2C/srcs/../include/I2c_PcA9685.hpp \
  /usr/include/fcntl.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -179,4 +179,4 @@ CMakeFiles/testes.dir/test/main.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
- /home/joao41/git/TEAM1_I2C/test/../include/I2c_INA219.hpp
+ /home/joao41/git/TEAM1_I2C/srcs/../include/I2c_INA219.hpp

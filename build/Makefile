@@ -168,6 +168,60 @@ test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
 .PHONY : test/fast
 
+srcs/I2c.o: srcs/I2c.cpp.o
+.PHONY : srcs/I2c.o
+
+# target to build an object file
+srcs/I2c.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c.cpp.o
+.PHONY : srcs/I2c.cpp.o
+
+srcs/I2c.i: srcs/I2c.cpp.i
+.PHONY : srcs/I2c.i
+
+# target to preprocess a source file
+srcs/I2c.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c.cpp.i
+.PHONY : srcs/I2c.cpp.i
+
+srcs/I2c.s: srcs/I2c.cpp.s
+.PHONY : srcs/I2c.s
+
+# target to generate assembly for a file
+srcs/I2c.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c.cpp.s
+.PHONY : srcs/I2c.cpp.s
+
+srcs/I2c_INA219.o: srcs/I2c_INA219.cpp.o
+.PHONY : srcs/I2c_INA219.o
+
+# target to build an object file
+srcs/I2c_INA219.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c_INA219.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.o
+.PHONY : srcs/I2c_INA219.cpp.o
+
+srcs/I2c_INA219.i: srcs/I2c_INA219.cpp.i
+.PHONY : srcs/I2c_INA219.i
+
+# target to preprocess a source file
+srcs/I2c_INA219.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c_INA219.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.i
+.PHONY : srcs/I2c_INA219.cpp.i
+
+srcs/I2c_INA219.s: srcs/I2c_INA219.cpp.s
+.PHONY : srcs/I2c_INA219.s
+
+# target to generate assembly for a file
+srcs/I2c_INA219.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_i2c.dir/build.make CMakeFiles/lib_i2c.dir/srcs/I2c_INA219.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/testes.dir/build.make CMakeFiles/testes.dir/srcs/I2c_INA219.cpp.s
+.PHONY : srcs/I2c_INA219.cpp.s
+
 srcs/I2c_PcA9685.o: srcs/I2c_PcA9685.cpp.o
 .PHONY : srcs/I2c_PcA9685.o
 
@@ -231,6 +285,12 @@ help:
 	@echo "... test"
 	@echo "... lib_i2c"
 	@echo "... testes"
+	@echo "... srcs/I2c.o"
+	@echo "... srcs/I2c.i"
+	@echo "... srcs/I2c.s"
+	@echo "... srcs/I2c_INA219.o"
+	@echo "... srcs/I2c_INA219.i"
+	@echo "... srcs/I2c_INA219.s"
 	@echo "... srcs/I2c_PcA9685.o"
 	@echo "... srcs/I2c_PcA9685.i"
 	@echo "... srcs/I2c_PcA9685.s"
