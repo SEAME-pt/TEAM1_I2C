@@ -87,7 +87,8 @@ This library implements I²C communication to control **two DC motors** and **on
 
 ```c++
 int main() {
-    I2c::init(0x60, 0x40, "/dev/i2c-1");
+
+	I2c::All_init();
     I2c::motor(0, 100, 1);
     sleep(5);
     I2c::stop_motors();
@@ -117,6 +118,7 @@ I2c::stop_motors();
 ```
 In case of any doubt use the  I2c::stop_motors(); for reset the motors. 
 
+
 # INA219
 
 The **INA219** is an I²C chip responsible for providing battery information such as **voltage**, **current**, and **power**.
@@ -126,7 +128,8 @@ The **INA219** is an I²C chip responsible for providing battery information suc
 The `I2c_INA219` class is included within the `I2c` class, so initialization can be done simply with:
 
 ```cpp
-I2c::stop_motors();
+
+	I2c::All_init();
 ```
 
 The sensor readings are stored in the following `I2c` class variables:
@@ -172,13 +175,18 @@ I2c_INA219::print();
 
 ---
 
-## Cmake
 
+## CMake
 
+### Basic Usage
 
+To build the project using **CMake**, follow these steps:
 
+1. Create a folder named `build` (if it does not already exist).  
+   If it exists, remove all existing files inside it to ensure a clean build.
 
+2. Inside the `build` directory, run the following command to generate the Makefiles using `CMakeLists.txt`:
 
-
-
+   ```bash
+   cmake ..
 
