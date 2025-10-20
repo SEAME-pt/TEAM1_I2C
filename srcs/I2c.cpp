@@ -1,5 +1,4 @@
 #include "../include/I2c.hpp"
-
 #include <cstdint>
 
 

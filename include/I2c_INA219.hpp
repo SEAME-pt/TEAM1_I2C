@@ -7,6 +7,7 @@
 
 
 
+#include <cstdint>
 
 class I2c_INA219
 {
