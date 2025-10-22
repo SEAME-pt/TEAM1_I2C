@@ -4,7 +4,7 @@
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 #include <iostream>
-
+#include <cstdint>
 
 
 class I2c

@@ -111,7 +111,7 @@ uint16_t I2c::angle_to_pwm(float angle) {
 
 void I2c::set_servo_angle( float angle) {	
 	uint8_t channel  = 0;
-	_fd_set = _fd_mot;
+	_fd_set = _fd_servo;
         uint16_t pwm = angle_to_pwm(angle);
         set_pwm(channel, 0, pwm);
     }
