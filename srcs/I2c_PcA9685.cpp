@@ -152,7 +152,7 @@ void I2c::motor(int mot,int seepd,bool dir)
 	{
 	set_pwm_duty(0, duty);  // Motor 1 speed
         set_pwm_duty(1, dir);  // Direction 1
-        set_pwm_duty(2, 0.0f);  // Direction 2
+        set_pwm_duty(2, dir_iv);  // Direction 2
         set_pwm_duty(3, 0.0f);  // Motor 2 speed
         set_pwm_duty(4, duty);  // Motor 2 speed
         set_pwm_duty(5, dir);  // Direction 2
