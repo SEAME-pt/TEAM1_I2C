@@ -91,8 +91,9 @@ void I2c_INA219::update_values()
     uint16_t power_raw = readRegister(fd, REG_POWER);
 
     // Conversões físicas
-     _Voltage = (int16_t)shunt_raw * 0.00001; // 10 µV/bit
-    double bus_voltage = ((bus_raw >> 3) * 0.004);       // 4 mV/bit
+     double bus_voltage = (int16_t)shunt_raw * 0.00001; // 10 µV/bit
+    
+	    _Voltage = ((bus_raw >> 3) * 0.004);       // 4 mV/bit
     _Current = (int16_t)current_raw * 0.1;         // 0.1 mA/bit (ajuste conforme calibração)
     _Power = power_raw * 2.0;                      // 2 mW/bit (depende da calibração)
 

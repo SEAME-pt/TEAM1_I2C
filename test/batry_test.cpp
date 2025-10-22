@@ -73,7 +73,7 @@ int main() {
     uint16_t power_raw = readRegister(fd, REG_POWER);
 
     // Conversões físicas
-    _voltage = shunt_voltage = (int16_t)shunt_raw * 0.00001; // 10 µV/bit
+  double  shunt_voltage = (int16_t)shunt_raw * 0.00001; // 10 µV/bit
     double bus_voltage = ((bus_raw >> 3) * 0.004);       // 4 mV/bit
     double current = (int16_t)current_raw * 0.1;         // 0.1 mA/bit (ajuste conforme calibração)
     double power = power_raw * 2.0;                      // 2 mW/bit (depende da calibração)

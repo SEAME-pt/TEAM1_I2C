@@ -3,6 +3,7 @@
 
 #include <cstdint>
 
+
 int I2c_PcA9685::_fd_mot = 0;
 int I2c_PcA9685::_fd_servo = 0;
 int I2c_PcA9685::_fd_set = 0;
@@ -27,6 +28,7 @@ void I2c_PcA9685::init(uint8_t addr_mot, uint8_t addr_servo,std::string i2c_devi
         if (ioctl(_fd_servo, I2C_SLAVE, addr_servo ) < 0) {
             throw std::runtime_error("Failed to set I2C address");
         }
+
 	_fd_set = _fd_mot;
  	write_byte(0x00, 0x00); // MODE1 normal
         usleep(5000);
@@ -112,7 +114,7 @@ uint16_t I2c_PcA9685::angle_to_pwm(float angle) {
 
 void I2c_PcA9685::set_servo_angle( float angle) {	
 	uint8_t channel  = 0;
-	_fd_set = _fd_mot;
+	_fd_set = _fd_servo;
         uint16_t pwm = angle_to_pwm(angle);
         set_pwm(channel, 0, pwm);
     }
@@ -121,33 +123,41 @@ void I2c_PcA9685::set_servo_angle( float angle) {
 void I2c_PcA9685::motor(int mot,int seepd,bool dir)
 {
 	_fd_set = _fd_mot;
-    	float adjusted_throttle = (float)seepd/100 * (float)dir;
+	
+	float dir_iv;
+	if(dir == 1)
+		dir_iv = 0.0;
+	else
+	 	dir_iv = 1;
+	
+
+    	float adjusted_throttle = (float)seepd/100 * (float)1;
         float duty = adjusted_throttle;
 	if (adjusted_throttle < 0.0f)
         	float duty = -adjusted_throttle;
 	if(mot == 1)
 	{
 	set_pwm_duty(0, duty);  // Motor 1 speed
-        set_pwm_duty(1, 1.0f);  // Direction 1
-        set_pwm_duty(2, 0.0f);  // Direction 2
+        set_pwm_duty(1, dir);  // Direction 1
+        set_pwm_duty(2, dir_iv);  // Direction 2
         set_pwm_duty(3, 0.0f);  // Motor 2 speed
         set_pwm_duty(4, duty);
 	}
 	if(mot == 2)
 	{
-        set_pwm_duty(5, 0.0f);  // Direction 2
-        set_pwm_duty(6, 1.0f);  // Direction 1
+        set_pwm_duty(5, dir_iv);  // Direction 2
+        set_pwm_duty(6, dir);  // Direction 1
         set_pwm_duty(7, duty);  // Motor 2 speed
 	}
 	if(mot == 0)
 	{
 	set_pwm_duty(0, duty);  // Motor 1 speed
-        set_pwm_duty(1, 1.0f);  // Direction 1
-        set_pwm_duty(2, 0.0f);  // Direction 2
+        set_pwm_duty(1, dir);  // Direction 1
+        set_pwm_duty(2, dir_iv);  // Direction 2
         set_pwm_duty(3, 0.0f);  // Motor 2 speed
         set_pwm_duty(4, duty);  // Motor 2 speed
-        set_pwm_duty(5, 0.0f);  // Direction 2
-        set_pwm_duty(6, 1.0f);  // Direction 1
+        set_pwm_duty(5, dir_iv);  // Direction 2
+        set_pwm_duty(6, dir);  // Direction 1
         set_pwm_duty(7, duty);  // Motor 2 speed
 	}
 	

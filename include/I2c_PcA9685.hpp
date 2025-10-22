@@ -10,13 +10,14 @@
 
 class I2c_PcA9685
 {
-	protected:
+	private:
 		static int _fd_mot;
 		static int _fd_servo;
 		static int _fd_set;
 		static float _SERVO_MIN_PULSE_MS;  // ms (0°)
 		static float _SERVO_MAX_PULSE_MS;  // ms (180°)
 		static float _SERVO_FREQ;   
+		static std::string _i2c_device;
 		static void write_byte(uint8_t reg, uint8_t val);
 		static void set_pwm(uint8_t channel, uint16_t on, uint16_t off);
 		static void set_pwm_duty(uint8_t channel, float duty_fraction);

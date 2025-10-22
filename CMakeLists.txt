@@ -1,16 +1,24 @@
+
 cmake_minimum_required(VERSION 3.10)
-project(I2c)
 
-# Supondo que seus arquivos fonte são: modulo1.c, modulo2.c, modulo.h
-set(SRC ./srcs/I2c.cpp ./srcs/I2c_PcA9685.cpp ./srcs/I2c_INA219.cpp)
+# Incluir toolchain antes de project()
+if(EXISTS "${CMAKE_SOURCE_DIR}/toolchain-rpi.cmake")
+    message(STATUS "🔧 Usando toolchain para Raspberry Pi")
+    include("${CMAKE_SOURCE_DIR}/toolchain-rpi.cmake")
+endif()
 
-# Biblioteca estática (libmeu_modulo.a)
+project(I2c LANGUAGES CXX)
+
+# Definir arquivos fonte
+set(SRC
+    srcs/I2c.cpp
+    srcs/I2c_PcA9685.cpp
+    srcs/I2c_INA219.cpp
+)
+
+# Biblioteca estática
 add_library(lib_i2c STATIC ${SRC})
 
-# Target 'lib' para rodar: make lib (gera libmeu_modulo.a)
-add_custom_target(lib DEPENDS meu_modulo)
+# Executável de testes
+add_executable(testes test/main.cpp ${SRC})
 
-# Opcional: se quiser incluir testes (supondo que test.cpp tem um main)
-
-    add_executable(testes ./test/main.cpp ${SRC})
-    add_custom_target(test DEPENDS testes)
