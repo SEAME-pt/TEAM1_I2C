@@ -1,5 +1,7 @@
 #include "../include/I2c_PcA9685.hpp"
 
+#include <cstdint>
+
 
 int I2c::_fd_mot = 0;
 int I2c::_fd_servo = 0;
