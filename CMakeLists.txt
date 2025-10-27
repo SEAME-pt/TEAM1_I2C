@@ -17,7 +17,7 @@ set(SRC
 )
 
 # Biblioteca estática
-add_library(lib_i2c STATIC ${SRC})
+add_library(_i2c STATIC ${SRC})
 
 # Executável de testes
 add_executable(testes test/main.cpp ${SRC})
