@@ -22,20 +22,21 @@ void I2c_INA219::writeRegister(int fd, uint8_t reg, uint16_t value) {
     buffer[1] = (value >> 8) & 0xFF;
     buffer[2] = value & 0xFF;
     if (write(fd, buffer, 3) != 3) {
-        perror("Erro ao escrever no registrador");
-        exit(1);
+	throw std::runtime_error("Erro ao escrever no registrador");
+
     }
 }
 
 uint16_t I2c_INA219::readRegister(int fd, uint8_t reg) {
     if (write(fd, &reg, 1) != 1) {
-        perror("Erro ao selecionar registrador");
-        exit(1);
+
+	throw std::runtime_error("Erro ao selecionar registrador");
+
     }
     uint8_t buffer[2];
     if (read(fd, buffer, 2) != 2) {
-        perror("Erro ao ler registrador");
-        exit(1);
+
+	throw std::runtime_error("Erro ao ler registrador");
     }
     return (buffer[0] << 8) | buffer[1];
 }
@@ -44,6 +45,9 @@ uint16_t I2c_INA219::readRegister(int fd, uint8_t reg) {
 
 void I2c_INA219::init( uint8_t addr,std::string i2c_device)
 {
+
+if (fd >= 0) close(fd);
+
    if(status == 1)
     {
 	_addr = addr;
@@ -53,6 +57,8 @@ void I2c_INA219::init( uint8_t addr,std::string i2c_device)
     fd = open(_i2c_device.c_str(), O_RDWR);
     if (fd < 0) {
         perror("Erro ao abrir barramento I2C");
+        close(fd);
+        throw std::runtime_error( "Erro ao abrir barramento I2C");
     }
 
     if (ioctl(fd, I2C_SLAVE, _addr) < 0) {
@@ -67,7 +73,7 @@ void I2c_INA219::update_values()
 {
     try
     {
-	init(_addr,_i2c_device);
+//	init(_addr,_i2c_device);
     }
     catch( std::exception &e)
     {
@@ -76,29 +82,38 @@ void I2c_INA219::update_values()
     }
 	    
 	
-    uint16_t config = 0x019F;
+    try
+    {
+    uint16_t config = 0x399F;
     writeRegister(fd, REG_CONFIG, config);
 
     // Calibração (exemplo para shunt de 0.1Ω e corrente máx ≈ 3.2A)
     // Fator de calibração depende do resistor shunt
-    uint16_t calibration = 4096;
+    uint16_t calibration = 2239;
     writeRegister(fd, REG_CALIBRATION, calibration);
 
     // ===== Leitura =====
+    //
+usleep(5000);
     uint16_t shunt_raw = readRegister(fd, REG_SHUNT_VOLTAGE);
     uint16_t bus_raw = readRegister(fd, REG_BUS_VOLTAGE);
     uint16_t current_raw = readRegister(fd, REG_CURRENT);
     uint16_t power_raw = readRegister(fd, REG_POWER);
+    std::cout << "Bus raw = " << bus_raw << std::endl;
 
-    // Conversões físicas
-     double bus_voltage = (int16_t)shunt_raw * 0.00001; // 10 µV/bit
-    
-	    _Voltage = ((bus_raw >> 3) * 0.004);       // 4 mV/bit
-    _Current = (int16_t)current_raw * 0.1;         // 0.1 mA/bit (ajuste conforme calibração)
-    _Power = power_raw * 2.0;                      // 2 mW/bit (depende da calibração)
+double shunt_voltage = (int16_t)shunt_raw * 0.00001; // V (10 µV/bit)
+_Voltage = ((bus_raw >> 3) * 0.004);                 // V (4 mV/bit)
+_Current = (int16_t)current_raw * 0.061;            // mA
+_Power = power_raw * 1.22;                           // mW
+           // 2 mW/bit (depende da calibração)
 
 
-    close(fd);
+    }
+	catch( std::exception &e)
+    {
+	    std::cout << "Failed update Vaules " << std::endl;
+	    return;
+    }
 
 }
 
@@ -117,5 +132,9 @@ void I2c_INA219::print()
 
 }
 
+void I2c_INA219::close_()
+{
+	close(fd);
+}
 
 
