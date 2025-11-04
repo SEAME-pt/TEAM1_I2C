@@ -1,5 +1,6 @@
 #include "../include/I2c_INA219.hpp"
 #include <cstdint>
+#include <iostream>
 
 #define REG_CONFIG             0x00
 #define REG_SHUNT_VOLTAGE      0x01
@@ -65,6 +66,14 @@ if (fd >= 0) close(fd);
         close(fd);
         throw std::runtime_error("Failed to set I2C address-INA219");
     }
+
+	 uint16_t config = 0x19FF;
+    writeRegister(fd, REG_CONFIG, config);
+
+    uint16_t calibration = 4096;;
+    writeRegister(fd, REG_CALIBRATION, calibration);
+
+usleep(10000);
 }
 
 
@@ -73,48 +82,32 @@ void I2c_INA219::update_values()
 {
     try
     {
-//	init(_addr,_i2c_device);
+        // ===== Leitura =====
+        uint16_t shunt_raw = readRegister(fd, REG_SHUNT_VOLTAGE);
+        uint16_t bus_raw = readRegister(fd, REG_BUS_VOLTAGE);
+        uint16_t current_raw = readRegister(fd, REG_CURRENT);
+        uint16_t power_raw = readRegister(fd, REG_POWER);
+        
+        std::cout << "Bus raw = 0x" << std::hex << bus_raw << std::dec << std::endl;
+        
+        // Shunt voltage: LSB = 10µV
+        double shunt_voltage = (int16_t)shunt_raw * 0.00001; // V (10 µV/bit)
+        
+        // Bus voltage: deslocar 3 bits e aplicar máscara de 13 bits
+        // LSB = 4mV = 0.004V
+        double bus_voltage = ((bus_raw >> 3) & 0x1FFF) * 0.0045; // V
+        
+        std::cout << "Bus voltage = " << bus_voltage << " V, Shunt voltage = " << shunt_voltage << " V" << std::endl;
+        
+        _Voltage = bus_voltage; // tensão total (VIN+)
+        _Current = (int16_t)current_raw * 0.0978;  // mA (depende da calibração)
+        _Power   = power_raw * 1.956;              // mW (depende da calibração)
     }
-    catch( std::exception &e)
+    catch(std::exception &e)
     {
-	    std::cout << "Failed update Vaules " << std::endl;
-	    return;
+        std::cout << "Failed to update values: " << e.what() << std::endl;
+        return;
     }
-	    
-	
-    try
-    {
-    uint16_t config = 0x399F;
-    writeRegister(fd, REG_CONFIG, config);
-
-    // Calibração (exemplo para shunt de 0.1Ω e corrente máx ≈ 3.2A)
-    // Fator de calibração depende do resistor shunt
-    uint16_t calibration = 2239;
-    writeRegister(fd, REG_CALIBRATION, calibration);
-
-    // ===== Leitura =====
-    //
-usleep(5000);
-    uint16_t shunt_raw = readRegister(fd, REG_SHUNT_VOLTAGE);
-    uint16_t bus_raw = readRegister(fd, REG_BUS_VOLTAGE);
-    uint16_t current_raw = readRegister(fd, REG_CURRENT);
-    uint16_t power_raw = readRegister(fd, REG_POWER);
-    std::cout << "Bus raw = " << bus_raw << std::endl;
-
-double shunt_voltage = (int16_t)shunt_raw * 0.00001; // V (10 µV/bit)
-_Voltage = ((bus_raw >> 3) * 0.004);                 // V (4 mV/bit)
-_Current = (int16_t)current_raw * 0.061;            // mA
-_Power = power_raw * 1.22;                           // mW
-           // 2 mW/bit (depende da calibração)
-
-
-    }
-	catch( std::exception &e)
-    {
-	    std::cout << "Failed update Vaules " << std::endl;
-	    return;
-    }
-
 }
 
 void I2c_INA219::print()
