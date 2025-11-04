@@ -27,8 +27,9 @@ int main()
 	I2c::brake_motor();
 	std::cout << "use the 2 motors used 2 commands" << std::endl;
 
-	I2c::motor(1,30,0);	
-	I2c::motor(2,30,0);	
+	sleep(3);
+	I2c::motor(1,50,0);	
+	I2c::motor(2,50,0);	
 	sleep(3);
 	
 	std::cout << "end" << std::endl;

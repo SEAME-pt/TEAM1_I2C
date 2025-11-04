@@ -173,8 +173,11 @@ void I2c_PcA9685::brake_motor()
         // Ambos os lados “altos” (equivale a curto virtual no driver)
         set_pwm_duty(1, duty);
         set_pwm_duty(2, duty);
+        set_pwm_duty(3, duty);
         set_pwm_duty(4, duty);
-        set_pwm_duty(5, duty);
+	set_pwm_duty(5, duty);
+        set_pwm_duty(6, duty);
+        set_pwm_duty(7, duty);
 
         usleep(100000); // 100 ms de frenagem ativa
 
