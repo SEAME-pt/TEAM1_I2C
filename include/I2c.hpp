@@ -10,6 +10,8 @@ class I2c: public I2c_PcA9685 , public I2c_INA219
 	
 	public:
 		static void All_init();
+		static void All_close();
+
 
 
 };

@@ -111,6 +111,16 @@ void I2c::motor(int mot, int speed, bool dir);
 | **speed** | Motor speed (0–100) |
 | **dir** | Rotation direction:<br>• `0` → one direction<br>• `1` → opposite direction |
 
+
+
+In clase the emergency braking exist the function brake_motor();
+
+ This function force the stop motors and brake Rotation 
+
+```c++
+brake_motor();
+```
+
 To stop the motors, either set the speed to **0** or use:
 
 ```c++
@@ -155,23 +165,14 @@ When using the print function, the values are automatically updated before being
 ```cpp
 I2c_INA219::print();
 ```
+## Get the battery in percentage
 
----
+This function execute the ``updated_values()`` and return the percentage of the battery using the corrent value.
 
-### Summary
+```cpp
+ int battery = I2c_INA219::value_batery();
 
-| Function                      | Description                                            |
-| ----------------------------- | ------------------------------------------------------ |
-| `I2c_INA219::update_values()` | Updates the voltage, current, and power readings.      |
-| `I2c_INA219::print()`         | Automatically updates and prints the current readings. |
-| `I2c::stop_motors()`          | Example of how to initialize the `I2c` class.          |
-
----
-
-### Notes
-
-* Make sure your I²C bus is properly initialized before calling any INA219 functions.
-* The `I2c_INA219` class handles sensor communication and stores data internally for easy access.
+```
 
 ---
 
@@ -188,5 +189,5 @@ To build the project using **CMake**, follow these steps:
 2. Inside the `build` directory, run the following command to generate the Makefiles using `CMakeLists.txt`:
 
    ```bash
-   cmake ..
+cmake ..
 

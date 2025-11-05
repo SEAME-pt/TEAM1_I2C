@@ -25,6 +25,8 @@ class I2c_INA219
 		static void init( uint8_t addr_servo, std::string i2c_device );
 		static void update_values();
 		static void print();
+		static void close_();
+		static int  value_batery();
 };
 
 

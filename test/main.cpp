@@ -5,6 +5,7 @@
 
 int main()
 {
+
 	std::cout << "inicialaze the i2c dispositive" << std::endl;
 	I2c::All_init();
 	std::cout << "-------------------------------" << std::endl;
@@ -37,5 +38,11 @@ int main()
 	I2c::end_motor_use();
 
 	
+//	I2c::motor(0, 50, 1);
+	I2c::print();
+	sleep(1);
+	I2c::print();
+
+	I2c::All_close();	
 	
 }
