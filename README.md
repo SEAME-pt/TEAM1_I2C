@@ -92,6 +92,7 @@ int main() {
     I2c::motor(0, 100, 1);
     sleep(5);
     I2c::stop_motors();
+    I2c::All_close();
 }
 ```
 

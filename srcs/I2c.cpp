@@ -13,5 +13,7 @@ void I2c::All_init()
 
 void I2c::All_close()
 {
+	 I2c::I2c_PcA9685::end_motor_use();
+
 	I2c_INA219::close_();
 }

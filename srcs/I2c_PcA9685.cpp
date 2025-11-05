@@ -136,7 +136,7 @@ void I2c_PcA9685::motor(int mot,int seepd,bool dir)
     	float adjusted_throttle = (float)seepd/100 * (float)1;
         float duty = adjusted_throttle;
 	if (adjusted_throttle < 0.0f)
-        	float duty = -adjusted_throttle;
+        	 duty = -adjusted_throttle;
 	if(mot == 1)
 	{
 	set_pwm_duty(0, duty);  // Motor 1 speed
