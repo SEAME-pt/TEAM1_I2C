@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include <cstdint>
+
 
 int I2c_PcA9685::_fd_mot = 0;
 int I2c_PcA9685::_fd_servo = 0;
@@ -141,10 +143,10 @@ void I2c_PcA9685::motor(int mot,int seepd,bool dir)
         set_pwm_duty(1, dir);  // Direction 1
         set_pwm_duty(2, dir_iv);  // Direction 2
         set_pwm_duty(3, 0.0f);  // Motor 2 speed
-        set_pwm_duty(4, duty);
 	}
 	if(mot == 2)
 	{
+        set_pwm_duty(4, duty);
         set_pwm_duty(5, dir_iv);  // Direction 2
         set_pwm_duty(6, dir);  // Direction 1
         set_pwm_duty(7, duty);  // Motor 2 speed
@@ -171,8 +173,11 @@ void I2c_PcA9685::brake_motor()
         // Ambos os lados “altos” (equivale a curto virtual no driver)
         set_pwm_duty(1, duty);
         set_pwm_duty(2, duty);
+        set_pwm_duty(3, duty);
         set_pwm_duty(4, duty);
-        set_pwm_duty(5, duty);
+	set_pwm_duty(5, duty);
+        set_pwm_duty(6, duty);
+        set_pwm_duty(7, duty);
 
         usleep(100000); // 100 ms de frenagem ativa
 

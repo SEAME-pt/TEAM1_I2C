@@ -122,17 +122,20 @@ void I2c_INA219::print()
     std::cout << "Power: " << _Power << " mW" << std::endl;
     std::cout << "Percentage: " << value<<  std::endl;
     std::cout << "==========================" << std::endl;
-
-
 }
 
 
 int  I2c_INA219::value_batery()
 {
 	I2c_INA219::update_values();
-	float max = 12.7;
+	int ret;
+	float max = 12.5;
 	float min = 10;
-	return (((_Voltage - min)/(max - min))* 100);
+
+	ret = ((_Voltage - min)/(max - min))* 100;
+		if(ret > 100)
+			ret =100;
+	return (ret);
 
 }
 
